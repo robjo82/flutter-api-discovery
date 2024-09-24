@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/found_object.dart';
+import 'package:myapp/pages/search_page.dart';
 import 'package:myapp/services/sncf_data.dart';
 import 'package:myapp/widgets/found_objects_list.dart';
 import 'package:myapp/widgets/icon_button_text.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Loosted',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+        primaryColor: Colors.purple[400],
         useMaterial3: true,
       ),
       home: const MyHomePage(),
@@ -59,12 +61,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Image.asset("assets/logo-dark.png", width: 200),
                     const SizedBox(
-                      height: 16,
+                      height: 24,
                     ),
                     IconTextButton(
                         text: "Rechercher un objet",
                         icon: Icons.search,
-                        onPressed: () {}),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SearchPage(),
+                            ),
+                          );
+                        }),
                   ],
                 )),
             Expanded(
@@ -90,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Objet fraichement trouvé!",
+                        "Objets fraichement trouvés!",
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 18,

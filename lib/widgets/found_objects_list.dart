@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/models/found_object.dart';
-import 'package:myapp/pages/found_object_detail_page.dart';
 import 'package:myapp/widgets/object_card.dart';
 
 class FoundObjectsList extends StatelessWidget {

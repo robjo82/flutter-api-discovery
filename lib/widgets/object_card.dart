@@ -103,6 +103,5 @@ class ObjectCard extends StatelessWidget {
         },
       ),
     );
-    ;
   }
 }
