@@ -19,29 +19,101 @@ class FoundObjectDetailPage extends StatelessWidget {
           children: [
             Expanded(
                 child: Center(
-              child: Image.asset("assets/logo.png"),
+              child: Icon(Icons.no_photography,
+                  size: 180, color: Colors.grey[400]),
             )),
-            Text(
-              foundObject.nature,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                    child: Text(
+                  foundObject.nature,
+                  softWrap: false,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 28),
+                )),
+                const SizedBox(
+                  width: 8.0,
+                ),
+                if (foundObject.dateRestituted != null)
+                  DecoratedBox(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.green[200]),
+                      child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
+                          child: Text('Rendu',
+                              style: TextStyle(
+                                  color: Colors.green[900], fontSize: 12))))
+                else
+                  DecoratedBox(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.red[200]),
+                      child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
+                          child: Text('Perdu',
+                              style: TextStyle(
+                                  color: Colors.red[900], fontSize: 12))))
+              ],
             ),
-            const SizedBox(height: 16.0),
-            Text('Type : ${foundObject.type}',
-                style: const TextStyle(fontSize: 18)),
+            Text(
+              foundObject.type,
+              style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            const Divider(
+              height: 1,
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.train),
+                const SizedBox(width: 4.0),
+                Text(foundObject.stationName ?? "?",
+                    style: const TextStyle(fontSize: 18)),
+              ],
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.vpn_key),
+                const SizedBox(width: 4.0),
+                Text(foundObject.stationCode ?? "?",
+                    style: const TextStyle(fontSize: 18)),
+              ],
+            ),
+            const SizedBox(
+              height: 8.0,
+            ),
+            Row(
+              children: [
+                const Icon(Icons.calendar_month),
+                const SizedBox(width: 4.0),
+                Text(
+                    '${foundObject.date.day}/${foundObject.date.month}/${foundObject.date.year}',
+                    style: const TextStyle(fontSize: 18)),
+              ],
+            ),
             const SizedBox(height: 8.0),
-            Text('Gare : ${foundObject.stationName}',
-                style: const TextStyle(fontSize: 18)),
-            Text('Code UIC : ${foundObject.stationCode}',
-                style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 8.0),
-            Text('Date trouvée : ${foundObject.date.toLocal()}',
-                style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 8.0),
-            if (foundObject.dateRestituted != null)
-              Text('Restitué le : ${foundObject.dateRestituted!.toLocal()}',
-                  style: const TextStyle(fontSize: 18))
-            else
-              const Text('Pas encore restitué', style: TextStyle(fontSize: 18)),
+            Row(
+              children: [
+                const Icon(Icons.schedule),
+                const SizedBox(width: 4.0),
+                Text('${foundObject.date.hour}:${foundObject.date.minute}',
+                    style: const TextStyle(fontSize: 18)),
+              ],
+            ),
             const SizedBox(height: 8.0),
             Row(
               children: [
