@@ -72,6 +72,7 @@ class _SearchPageState extends State<SearchPage> {
                       placeholder: 'Nom de la gare',
                       borderRadius: 15.0,
                       icon: Icons.train,
+                      suggestions: SncfData().trainStations,
                     ),
                     CustomTextInput(
                       controller: _typeController,
@@ -79,6 +80,7 @@ class _SearchPageState extends State<SearchPage> {
                       placeholder: 'Type d\'objet',
                       borderRadius: 15.0,
                       icon: Icons.handyman,
+                      suggestions: SncfData().objectTypes,
                     ),
                     DatePicker(
                       backgroundColor: Colors.grey[200],
