@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Color.fromRGBO(245, 223, 255, 1),
+      backgroundColor: const Color.fromRGBO(245, 223, 255, 1),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

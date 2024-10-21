@@ -23,11 +23,11 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromRGBO(245, 223, 255, 1),
+        backgroundColor: const Color.fromRGBO(245, 223, 255, 1),
         appBar: AppBar(
           title: Image.asset("assets/logo-dark.png", width: 160),
           centerTitle: true,
-          backgroundColor: Color.fromRGBO(245, 223, 255, 1),
+          backgroundColor: const Color.fromRGBO(245, 223, 255, 1),
         ),
         body: Expanded(
             child: Container(

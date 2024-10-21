@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
 class FoundObject {
   final DateTime date; // Date à laquelle l'objet a été trouvé
   final DateTime? dateRestituted; // Date de restitution de l'objet (nullable)
@@ -30,5 +33,18 @@ class FoundObject {
       type: json['gc_obo_type_c'] as String,
       recordType: json['gc_obo_nom_recordtype_sc_c'] as String,
     );
+  }
+
+  // Générer un ID unique basé sur les propriétés de l'objet
+  String getUniqueId() {
+    final String rawId =
+        '${date.toIso8601String()}|$stationName|$nature|$type';
+
+    // Générer un hash SHA-256 de la chaîne concaténée
+    final bytes = utf8.encode(rawId);
+    final digest = sha256.convert(bytes);
+
+    // Retourner le hash sous forme de chaîne de caractères
+    return digest.toString();
   }
 }
