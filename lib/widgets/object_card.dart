@@ -3,13 +3,18 @@ import 'package:myapp/models/found_object.dart';
 import 'package:myapp/pages/found_object_detail_page.dart';
 import 'package:myapp/services/database_helper.dart';
 
-class ObjectCard extends StatelessWidget {
+class ObjectCard extends StatefulWidget {
   final FoundObject object;
   final DatabaseHelper databaseHelper;
 
   const ObjectCard(
       {super.key, required this.object, required this.databaseHelper});
 
+  @override
+  State<ObjectCard> createState() => _ObjectCardState();
+}
+
+class _ObjectCardState extends State<ObjectCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,7 +31,7 @@ class ObjectCard extends StatelessWidget {
             Flexible(
                 fit: FlexFit.loose,
                 child: Text(
-                  object.nature,
+                  widget.object.nature,
                   softWrap: false,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -38,7 +43,7 @@ class ObjectCard extends StatelessWidget {
             Row(
               children: [
                 FutureBuilder<bool>(
-                    future: databaseHelper.isObjectViewed(object),
+                    future: widget.databaseHelper.isObjectViewed(widget.object),
                     builder:
                         (BuildContext context, AsyncSnapshot<bool> snapshot) {
                       if (snapshot.hasData && snapshot.data == true) {
@@ -60,7 +65,7 @@ class ObjectCard extends StatelessWidget {
                 const SizedBox(
                   width: 4.0,
                 ),
-                if (object.dateRestituted != null)
+                if (widget.object.dateRestituted != null)
                   DecoratedBox(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
@@ -90,7 +95,7 @@ class ObjectCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              object.type,
+              widget.object.type,
               style: TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 12,
@@ -110,7 +115,7 @@ class ObjectCard extends StatelessWidget {
               children: [
                 const Icon(Icons.train),
                 const SizedBox(width: 4.0),
-                Text(object.stationName ?? "?"),
+                Text(widget.object.stationName ?? "?"),
               ],
             ),
             Row(
@@ -118,7 +123,7 @@ class ObjectCard extends StatelessWidget {
                 const Icon(Icons.calendar_month),
                 const SizedBox(width: 4.0),
                 Text(
-                    '${object.date.day}/${object.date.month}/${object.date.year}'),
+                    '${widget.object.date.day}/${widget.object.date.month}/${widget.object.date.year}'),
               ],
             ),
           ],
@@ -126,17 +131,17 @@ class ObjectCard extends StatelessWidget {
         isThreeLine: true,
         onTap: () {
           //sauvegarder la vu de l'objet
-          databaseHelper.insertViewedObject(object);
+          widget.databaseHelper.insertViewedObject(widget.object);
 
           // Naviguer vers la page de détails lors du clic
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => FoundObjectDetailPage(
-                foundObject: object,
+                foundObject: widget.object,
               ),
             ),
-          );
+          ).then((_) => setState(() {}));
         },
       ),
     );

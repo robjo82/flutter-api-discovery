@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:myapp/models/found_object.dart';
 import 'package:http/http.dart' as http;
+import 'package:myapp/services/database_helper.dart';
 
 class SncfData {
   final String apiUrl =
@@ -22,6 +23,7 @@ class SncfData {
     String? objectType, // Filtrer par type d'objet
     DateTime? dateMin, // Filtrer par date minimale
     DateTime? dateMax, // Filtrer par date maximale
+    bool onlyNew = false, // Si true, les objets déjà vus sont exclus
   }) async {
     String whereClause = '';
 
@@ -33,8 +35,9 @@ class SncfData {
 
     //Ajoute le filtre Type
     if (objectType != null && objectType.isNotEmpty) {
-      if(whereClause.isNotEmpty) whereClause += '%20AND%20';
-      whereClause += 'gc_obo_type_c%20%3D%20%22${Uri.encodeComponent(objectType)}%22';
+      if (whereClause.isNotEmpty) whereClause += '%20AND%20';
+      whereClause +=
+          'gc_obo_type_c%20%3D%20%22${Uri.encodeComponent(objectType)}%22';
     }
 
     // Ajoute le filtre par date min
@@ -61,7 +64,22 @@ class SncfData {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['results'];
-      return data.map((item) => FoundObject.fromJson(item)).toList();
+      List<FoundObject> foundObjects =
+          data.map((item) => FoundObject.fromJson(item)).toList();
+
+      // Si onlyNew est activé, filtrer les objets déjà vus
+      if (onlyNew) {
+        // Récupérer les objets déjà vus depuis la base de données
+        final dbHelper = DatabaseHelper();
+        List<String> viewedObjectIds = await dbHelper.getViewedObjectIds();
+
+        // Filtrer les objets dont l'ID est déjà vu
+        foundObjects = foundObjects.where((object) {
+          return !viewedObjectIds.contains(object.getUniqueId());
+        }).toList();
+      }
+
+      return foundObjects;
     } else {
       throw Exception('Erreur lors de la récupération des objets trouvés');
     }

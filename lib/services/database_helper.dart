@@ -66,12 +66,21 @@ class DatabaseHelper {
     return result.isNotEmpty;
   }
 
+  // Récupérer les IDs des objets déjà consultés
+  Future<List<String>> getViewedObjectIds() async {
+    final db = await database;
+    final List<Map<String, dynamic>> result =
+        await db.query('viewed_objects', columns: ['id']);
+    return result.map((row) => row['id'] as String).toList();
+  }
+
   // Insérer une recherche récente
   Future<void> insertRecentSearch({
     required String stationName,
     required String objectType,
     required DateTime? dateMin,
     required DateTime? dateMax,
+    required bool onlyNew,
   }) async {
     final db = await database;
     await db.insert('recent_searches', {
@@ -79,6 +88,7 @@ class DatabaseHelper {
       'object_type': objectType,
       'date_min': dateMin?.toIso8601String(),
       'date_max': dateMax?.toIso8601String(),
+      'only_new': onlyNew ? 1 : 0,
     });
   }
 
