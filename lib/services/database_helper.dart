@@ -19,7 +19,7 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'sncf_objets_trouves.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE viewed_objects (
@@ -36,9 +36,17 @@ class DatabaseHelper {
             station_name TEXT,
             object_type TEXT,
             date_min TEXT,
-            date_max TEXT
+            date_max TEXT,
+            only_new INTEGER
           )
         ''');
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          // Ajoute la colonne only_new si elle n'existe pas
+          await db.execute(
+              'ALTER TABLE recent_searches ADD COLUMN only_new INTEGER DEFAULT 0');
+        }
       },
     );
   }

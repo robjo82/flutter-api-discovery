@@ -166,9 +166,8 @@ class _SearchPageState extends State<SearchPage> {
                           );
                         },
                       ),
-                    ] else ...[
-                      const Spacer()
                     ],
+                    const Spacer(),
                     const SizedBox(height: 16),
                     Row(
                       children: [
