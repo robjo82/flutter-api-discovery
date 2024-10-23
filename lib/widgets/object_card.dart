@@ -42,7 +42,17 @@ class ObjectCard extends StatelessWidget {
                     builder:
                         (BuildContext context, AsyncSnapshot<bool> snapshot) {
                       if (snapshot.hasData && snapshot.data == true) {
-                        return const Icon(Icons.visibility);
+                        return DecoratedBox(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: Colors.grey[400]),
+                            child: Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    4.0, 2.0, 4.0, 2.0),
+                                child: Text('Vue',
+                                    style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 12))));
                       } else {
                         return const SizedBox();
                       }
