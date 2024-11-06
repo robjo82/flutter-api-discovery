@@ -53,7 +53,7 @@ class CustomTextInput extends StatelessWidget {
                       FocusNode focusNode,
                       VoidCallback onFieldSubmitted) {
             return TextField(
-              controller: fieldController,
+              controller: controller,
               focusNode: focusNode,
               decoration: InputDecoration(
                 hintText: placeholder,

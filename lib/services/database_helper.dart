@@ -103,6 +103,15 @@ class DatabaseHelper {
   // Récupérer les recherches récentes
   Future<List<Map<String, dynamic>>> getRecentSearches() async {
     final db = await database;
-    return await db.query('recent_searches', orderBy: 'id DESC');
+    return await db.query('recent_searches', orderBy: 'id DESC', limit: 3);
+  }
+
+  Future<void> deleteRecentSearch(int id) async {
+    final db = await database;
+    await db.delete(
+      'recent_searches',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }

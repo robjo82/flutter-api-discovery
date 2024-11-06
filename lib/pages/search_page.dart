@@ -32,7 +32,7 @@ class _SearchPageState extends State<SearchPage> {
   // Charger les trois dernières recherches depuis la base de données
   Future<void> _loadRecentSearches() async {
     List<Map<String, dynamic>> searches =
-        await DatabaseHelper().getRecentSearches(); // Limiter à 3
+        await DatabaseHelper().getRecentSearches();
     setState(() {
       _recentSearches = searches;
     });
@@ -134,6 +134,8 @@ class _SearchPageState extends State<SearchPage> {
                       initialMaxDate: _selectedMaxDate,
                     ),
                     CheckboxListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 2, vertical: 0),
                       title: const Text("Nouveaux objets uniquement"),
                       value: onlyView,
                       onChanged: (value) {
@@ -141,33 +143,94 @@ class _SearchPageState extends State<SearchPage> {
                           onlyView = value!;
                         });
                       },
-                    ),
-                    const SizedBox(
-                        height:
-                            16), // Espacement avant la liste des recherches récentes
+                    ), // Espacement avant la liste des recherches récentes
                     if (_recentSearches.isNotEmpty) ...[
-                      const Text(
+                      const Divider(
+                        height: 1,
+                        thickness: 1,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
                         "Recherches récentes",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: Colors.grey[800]),
                       ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _recentSearches.length,
-                        itemBuilder: (context, index) {
-                          final search = _recentSearches[index];
-                          return ListTile(
-                            title: Text(
-                                '${search['station_name']} - ${search['object_type']}'),
-                            subtitle: Text(
-                                'Du ${search['date_min'] ?? 'N/A'} au ${search['date_max'] ?? 'N/A'}'),
-                            onTap: () => _searchFromRecent(
-                                search), // Effectuer la recherche
-                          );
-                        },
-                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: _recentSearches.length,
+                          itemBuilder: (context, index) {
+                            final search = _recentSearches[index];
+
+                            // Préparer les informations conditionnelles pour l'affichage
+                            String station = search['station_name'] ?? '';
+                            String objectType = search['object_type'] ?? '';
+                            String dateMin = search['date_min'] != null
+                                ? 'Du ${search['date_min']}'
+                                : '';
+                            String dateMax = search['date_max'] != null
+                                ? 'Au ${search['date_max']}'
+                                : '';
+                            bool onlyNew =
+                                search['only_new'] == 1; // Convertit en booléen
+
+                            // Construire le titre et le sous-titre
+                            String title = '';
+                            String subtitle = '';
+
+                            // Si station ou objectType est spécifié, cela devient le title
+                            if (station.isNotEmpty || objectType.isNotEmpty) {
+                              title = '${station.isNotEmpty ? station : ''}'
+                                  '${station.isNotEmpty && objectType.isNotEmpty ? ' - ' : ''}'
+                                  '${objectType.isNotEmpty ? objectType : ''}';
+                              subtitle = [
+                                dateMin,
+                                dateMax,
+                                onlyNew ? 'Nouveaux objets uniquement' : ''
+                              ]
+                                  .where((element) => element.isNotEmpty)
+                                  .join('\n');
+                            } else {
+                              // Sinon, on met date et conditions dans le title
+                              title = [
+                                dateMin,
+                                dateMax,
+                                onlyNew ? 'Nouveaux objets uniquement' : ''
+                              ]
+                                  .where((element) => element.isNotEmpty)
+                                  .join('\n');
+                            }
+
+                            return ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading: Icon(Icons.history,
+                                  color: Colors
+                                      .grey[700]), // Icône de début de ligne
+                              title: Text(title),
+                              subtitle:
+                                  subtitle.isNotEmpty ? Text(subtitle) : null,
+                              trailing: IconButton(
+                                icon: const Icon(Icons.close,
+                                    color: Colors.purple),
+                                onPressed: () async {
+                                  // Supprimer la recherche de la base de données et recharger la liste
+                                  await DatabaseHelper()
+                                      .deleteRecentSearch(search['id']);
+                                  _loadRecentSearches(); // Recharger les recherches récentes
+                                },
+                              ),
+                              onTap: () => _searchFromRecent(
+                                  search), // Effectuer la recherche
+                            );
+                          },
+                        ),
+                      )
+                    ] else ...[
+                      const Spacer(),
                     ],
-                    const Spacer(),
+
                     const SizedBox(height: 16),
                     Row(
                       children: [
@@ -224,7 +287,8 @@ class _SearchPageState extends State<SearchPage> {
                               _typeController.clear();
                               _selectedMaxDate = null;
                               _selectedMinDate = null;
-                            })
+                            }),
+                            _loadRecentSearches()
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.purple[200],
