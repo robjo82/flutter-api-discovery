@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/models/found_object.dart';
-import 'package:myapp/services/database_helper.dart';
-import 'package:myapp/services/sncf_data.dart';
-import 'package:myapp/widgets/custom_text_input.dart';
-import 'package:myapp/widgets/date_picker.dart';
-import 'package:myapp/widgets/found_objects_list.dart';
+import 'package:loosted/models/found_object.dart';
+import 'package:loosted/services/database_helper.dart';
+import 'package:loosted/services/sncf_data.dart';
+import 'package:loosted/widgets/custom_text_input.dart';
+import 'package:loosted/widgets/date_picker.dart';
+import 'package:loosted/widgets/found_objects_list.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});

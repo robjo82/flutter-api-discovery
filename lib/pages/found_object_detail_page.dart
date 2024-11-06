@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/models/found_object.dart';
+import 'package:loosted/models/found_object.dart';
 
 class FoundObjectDetailPage extends StatelessWidget {
   final FoundObject foundObject;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/models/found_object.dart';
-import 'package:myapp/pages/found_object_detail_page.dart';
-import 'package:myapp/services/database_helper.dart';
+import 'package:loosted/models/found_object.dart';
+import 'package:loosted/pages/found_object_detail_page.dart';
+import 'package:loosted/services/database_helper.dart';
 
 class ObjectCard extends StatefulWidget {
   final FoundObject object;

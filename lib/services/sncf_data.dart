@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:myapp/models/found_object.dart';
+import 'package:loosted/models/found_object.dart';
 import 'package:http/http.dart' as http;
-import 'package:myapp/services/database_helper.dart';
+import 'package:loosted/services/database_helper.dart';
 
 class SncfData {
   final String apiUrl =

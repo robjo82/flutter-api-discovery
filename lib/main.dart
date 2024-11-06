@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/models/found_object.dart';
-import 'package:myapp/pages/search_page.dart';
-import 'package:myapp/services/sncf_data.dart';
-import 'package:myapp/widgets/found_objects_list.dart';
-import 'package:myapp/widgets/icon_button_text.dart';
+import 'package:loosted/models/found_object.dart';
+import 'package:loosted/pages/search_page.dart';
+import 'package:loosted/services/sncf_data.dart';
+import 'package:loosted/widgets/found_objects_list.dart';
+import 'package:loosted/widgets/icon_button_text.dart';
 
 void main() {
   runApp(const MyApp());
