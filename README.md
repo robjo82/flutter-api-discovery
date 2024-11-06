@@ -7,6 +7,8 @@ Une application Flutter permettant de rechercher et visualiser les objets trouv�
 - **Rechercher des objets trouvés** par gare, type d'objet, et date.
 - **Auto-complétion** dans les champs de recherche pour faciliter la sélection des gares et des types d'objets.
 - **Affichage des résultats** avec la possibilité de voir les détails d'un objet trouvé.
+- **Historique des objets vus** avec la possibilité de ne chercher que les objets non vu.
+- **Historique des recherches** avec la possibilité de rejouer une recherche.
 - **Tri par date décroissante** pour visualiser les objets les plus récemment trouvés.
 
 ## Captures d'écran
