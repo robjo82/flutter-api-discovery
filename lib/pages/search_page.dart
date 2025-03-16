@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:loosted/models/found_object.dart';
-import 'package:loosted/services/database_helper.dart';
-import 'package:loosted/services/sncf_data.dart';
-import 'package:loosted/widgets/custom_text_input.dart';
-import 'package:loosted/widgets/date_picker.dart';
-import 'package:loosted/widgets/found_objects_list.dart';
+import 'package:flutter_api_discovery/models/found_object.dart';
+import 'package:flutter_api_discovery/services/database_helper.dart';
+import 'package:flutter_api_discovery/services/sncf_data.dart';
+import 'package:flutter_api_discovery/widgets/custom_text_input.dart';
+import 'package:flutter_api_discovery/widgets/date_picker.dart';
+import 'package:flutter_api_discovery/widgets/found_objects_list.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -26,10 +26,9 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    _loadRecentSearches(); // Charger les recherches récentes au démarrage
+    _loadRecentSearches();
   }
 
-  // Charger les trois dernières recherches depuis la base de données
   Future<void> _loadRecentSearches() async {
     List<Map<String, dynamic>> searches =
         await DatabaseHelper().getRecentSearches();
@@ -38,7 +37,6 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  // Effectuer une recherche basée sur une recherche récente
   void _searchFromRecent(Map<String, dynamic> recentSearch) {
     setState(() {
       _stationController.text = recentSearch['station_name'] ?? '';
@@ -49,7 +47,6 @@ class _SearchPageState extends State<SearchPage> {
           recentSearch['only_new'] == 1; // SQLite stocke booléens comme int
     });
 
-    // Lancer la recherche
     SncfData()
         .searchFoundObjects(
             stationName: _stationController.text,
@@ -70,7 +67,7 @@ class _SearchPageState extends State<SearchPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromRGBO(245, 223, 255, 1),
         appBar: AppBar(
-          title: Image.asset("assets/logo-dark.png", width: 160),
+          title: Image.asset("assets/logo.png", width: 160),
           centerTitle: true,
           backgroundColor: const Color.fromRGBO(245, 223, 255, 1),
         ),
@@ -87,7 +84,7 @@ class _SearchPageState extends State<SearchPage> {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: const Offset(0, 3), // changes position of shadow
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -98,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Recherche d'objets",
+                    "Search for lost objects",
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 18,
@@ -114,7 +111,7 @@ class _SearchPageState extends State<SearchPage> {
                     CustomTextInput(
                       controller: _stationController,
                       backgroundColor: Colors.grey[200],
-                      placeholder: 'Nom de la gare',
+                      placeholder: 'Train station',
                       borderRadius: 15.0,
                       icon: Icons.train,
                       suggestions: SncfData().trainStations,
@@ -122,7 +119,7 @@ class _SearchPageState extends State<SearchPage> {
                     CustomTextInput(
                       controller: _typeController,
                       backgroundColor: Colors.grey[200],
-                      placeholder: 'Type d\'objet',
+                      placeholder: 'Object type',
                       borderRadius: 15.0,
                       icon: Icons.handyman,
                       suggestions: SncfData().objectTypes,
@@ -136,14 +133,14 @@ class _SearchPageState extends State<SearchPage> {
                     CheckboxListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 2, vertical: 0),
-                      title: const Text("Nouveaux objets uniquement"),
+                      title: const Text("New objects only"),
                       value: onlyView,
                       onChanged: (value) {
                         setState(() {
                           onlyView = value!;
                         });
                       },
-                    ), // Espacement avant la liste des recherches récentes
+                    ),
                     if (_recentSearches.isNotEmpty) ...[
                       const Divider(
                         height: 1,
@@ -151,7 +148,7 @@ class _SearchPageState extends State<SearchPage> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Recherches récentes",
+                        "Recent searches",
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
@@ -164,23 +161,20 @@ class _SearchPageState extends State<SearchPage> {
                           itemBuilder: (context, index) {
                             final search = _recentSearches[index];
 
-                            // Préparer les informations conditionnelles pour l'affichage
                             String station = search['station_name'] ?? '';
                             String objectType = search['object_type'] ?? '';
                             String dateMin = search['date_min'] != null
-                                ? 'Du ${search['date_min']}'
+                                ? 'From ${search['date_min']}'
                                 : '';
                             String dateMax = search['date_max'] != null
-                                ? 'Au ${search['date_max']}'
+                                ? 'To ${search['date_max']}'
                                 : '';
                             bool onlyNew =
-                                search['only_new'] == 1; // Convertit en booléen
+                                search['only_new'] == 1;
 
-                            // Construire le titre et le sous-titre
                             String title = '';
                             String subtitle = '';
 
-                            // Si station ou objectType est spécifié, cela devient le title
                             if (station.isNotEmpty || objectType.isNotEmpty) {
                               title = '${station.isNotEmpty ? station : ''}'
                                   '${station.isNotEmpty && objectType.isNotEmpty ? ' - ' : ''}'
@@ -188,16 +182,15 @@ class _SearchPageState extends State<SearchPage> {
                               subtitle = [
                                 dateMin,
                                 dateMax,
-                                onlyNew ? 'Nouveaux objets uniquement' : ''
+                                onlyNew ? 'New objects only' : ''
                               ]
                                   .where((element) => element.isNotEmpty)
                                   .join('\n');
                             } else {
-                              // Sinon, on met date et conditions dans le title
                               title = [
                                 dateMin,
                                 dateMax,
-                                onlyNew ? 'Nouveaux objets uniquement' : ''
+                                onlyNew ? 'New objects only' : ''
                               ]
                                   .where((element) => element.isNotEmpty)
                                   .join('\n');
@@ -207,7 +200,7 @@ class _SearchPageState extends State<SearchPage> {
                               contentPadding: EdgeInsets.zero,
                               leading: Icon(Icons.history,
                                   color: Colors
-                                      .grey[700]), // Icône de début de ligne
+                                      .grey[700]),
                               title: Text(title),
                               subtitle:
                                   subtitle.isNotEmpty ? Text(subtitle) : null,
@@ -215,14 +208,11 @@ class _SearchPageState extends State<SearchPage> {
                                 icon: const Icon(Icons.close,
                                     color: Colors.purple),
                                 onPressed: () async {
-                                  // Supprimer la recherche de la base de données et recharger la liste
                                   await DatabaseHelper()
                                       .deleteRecentSearch(search['id']);
-                                  _loadRecentSearches(); // Recharger les recherches récentes
-                                },
+                                  _loadRecentSearches();                                },
                               ),
-                              onTap: () => _searchFromRecent(
-                                  search), // Effectuer la recherche
+                              onTap: () => _searchFromRecent(search),
                             );
                           },
                         ),
@@ -237,11 +227,9 @@ class _SearchPageState extends State<SearchPage> {
                         Expanded(
                             child: ElevatedButton(
                           onPressed: () {
-                            // Rechercher et afficher les résultats
                             final String stationName = _stationController.text;
                             final String objectType = _typeController.text;
 
-                            //enregistrer la recherche
                             DatabaseHelper().insertRecentSearch(
                                 stationName: stationName,
                                 objectType: objectType,
@@ -267,7 +255,7 @@ class _SearchPageState extends State<SearchPage> {
                             foregroundColor: Colors.white,
                             textStyle: const TextStyle(fontSize: 18),
                           ),
-                          child: const Text('Rechercher'),
+                          child: const Text('Search'),
                         ))
                       ],
                     )
@@ -295,7 +283,7 @@ class _SearchPageState extends State<SearchPage> {
                             foregroundColor: Colors.white,
                             textStyle: const TextStyle(fontSize: 18),
                           ),
-                          child: const Text('Nouvelle recherche'),
+                          child: const Text('New Search'),
                         ))
                       ],
                     )

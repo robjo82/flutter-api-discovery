@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:loosted/models/found_object.dart';
-import 'package:loosted/pages/found_object_detail_page.dart';
-import 'package:loosted/services/database_helper.dart';
+import 'package:flutter_api_discovery/models/found_object.dart';
+import 'package:flutter_api_discovery/pages/found_object_detail_page.dart';
+import 'package:flutter_api_discovery/services/database_helper.dart';
+import 'package:flutter_api_discovery/widgets/badge.dart';
 
 class ObjectCard extends StatefulWidget {
   final FoundObject object;
@@ -26,67 +27,44 @@ class _ObjectCardState extends State<ObjectCard> {
       child: ListTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Flexible(
-                fit: FlexFit.loose,
-                child: Text(
-                  widget.object.nature,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 18),
-                )),
-            const SizedBox(
-              width: 8.0,
+              child: Text(
+                widget.object.nature,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
             ),
             Row(
               children: [
                 FutureBuilder<bool>(
-                    future: widget.databaseHelper.isObjectViewed(widget.object),
-                    builder:
-                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
-                      if (snapshot.hasData && snapshot.data == true) {
-                        return DecoratedBox(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: Colors.grey[400]),
-                            child: Padding(
-                                padding: const EdgeInsets.fromLTRB(
-                                    4.0, 2.0, 4.0, 2.0),
-                                child: Text('Vue',
-                                    style: TextStyle(
-                                        color: Colors.grey[600],
-                                        fontSize: 12))));
-                      } else {
-                        return const SizedBox();
-                      }
-                    }),
-                const SizedBox(
-                  width: 4.0,
+                  future: widget.databaseHelper.isObjectViewed(widget.object),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data == true) {
+                      return const CustomBadge(
+                        text: 'View',
+                        backgroundColor: Colors.grey,
+                        textColor: Colors.white,
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
                 ),
-                if (widget.object.dateRestituted != null)
-                  DecoratedBox(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.green[200]),
-                      child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
-                          child: Text('Rendu',
-                              style: TextStyle(
-                                  color: Colors.green[900], fontSize: 12))))
+                const SizedBox(width: 4.0),
+                if (widget.object.dateReturned != null)
+                  const CustomBadge(
+                    text: 'Returned',
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                  )
                 else
-                  DecoratedBox(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.red[200]),
-                      child: Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
-                          child: Text('Perdu',
-                              style: TextStyle(
-                                  color: Colors.red[900], fontSize: 12))))
+                  const CustomBadge(
+                    text: 'Lost',
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                  ),
               ],
             )
           ],
@@ -130,10 +108,8 @@ class _ObjectCardState extends State<ObjectCard> {
         ),
         isThreeLine: true,
         onTap: () {
-          //sauvegarder la vu de l'objet
           widget.databaseHelper.insertViewedObject(widget.object);
 
-          // Naviguer vers la page de détails lors du clic
           Navigator.push(
             context,
             MaterialPageRoute(

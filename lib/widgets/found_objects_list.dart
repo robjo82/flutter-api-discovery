@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loosted/models/found_object.dart';
-import 'package:loosted/services/database_helper.dart';
-import 'package:loosted/widgets/object_card.dart';
+import 'package:flutter_api_discovery/models/found_object.dart';
+import 'package:flutter_api_discovery/services/database_helper.dart';
+import 'package:flutter_api_discovery/widgets/object_card.dart';
 
 class FoundObjectsList extends StatefulWidget {
   final List<FoundObject> foundObjects;
@@ -21,7 +21,6 @@ class _FoundObjectsListState extends State<FoundObjectsList> {
     super.initState();
     _visibleItems = List.generate(widget.foundObjects.length, (_) => false);
 
-    // Déclencher le fade-in progressif des éléments
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _animateItems();
     });

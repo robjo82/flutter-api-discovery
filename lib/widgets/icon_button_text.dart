@@ -18,30 +18,30 @@ class IconTextButton extends StatelessWidget {
       onPressed: onPressed,
       style: ButtonStyle(
         backgroundColor:
-            WidgetStateProperty.all(Colors.white), // Couleur de fond
+            WidgetStateProperty.all(Colors.white),
         padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
         ),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0), // Bords arrondis
+            borderRadius: BorderRadius.circular(30.0),
           ),
         ),
         shadowColor: WidgetStateProperty.all(Colors.grey.withOpacity(0.5)),
-        elevation: WidgetStateProperty.all(4), // Ombre
+        elevation: WidgetStateProperty.all(4),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.max, // Ajuste la taille du bouton au contenu
+        mainAxisSize: MainAxisSize.max,
         children: [
           Icon(
             icon,
-            color: Colors.grey, // Couleur de l'icône
+            color: Colors.grey,
           ),
-          const SizedBox(width: 8.0), // Espace entre l'icône et le texte
+          const SizedBox(width: 8.0),
           Text(
             text,
             style: TextStyle(
-              color: Colors.grey[500], // Couleur du texte
+              color: Colors.grey[500],
               fontSize: 16.0,
             ),
           ),

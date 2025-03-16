@@ -30,8 +30,8 @@ class CustomTextInput extends StatelessWidget {
       child: Row(
         children: [
           if (icon != null) ...[
-            Icon(icon, color: Colors.grey), // Icône à gauche
-            const SizedBox(width: 8.0), // Espacement entre l'icône et l'input
+            Icon(icon, color: Colors.grey),
+            const SizedBox(width: 8.0),
           ],
           Expanded(
               child: Autocomplete<String>(
@@ -39,7 +39,6 @@ class CustomTextInput extends StatelessWidget {
             if (textEditingValue.text.isEmpty) {
               return const Iterable<String>.empty();
             }
-            // Filtrer la liste des suggestions en fonction du texte saisi
             return suggestions.where((String suggestion) {
               return suggestion
                   .toLowerCase()
@@ -47,7 +46,7 @@ class CustomTextInput extends StatelessWidget {
             });
           }, onSelected: (String selection) {
             controller.text =
-                selection; // Met à jour le champ de texte avec la sélection
+                selection;
           }, fieldViewBuilder: (BuildContext context,
                       TextEditingController fieldController,
                       FocusNode focusNode,
@@ -57,9 +56,9 @@ class CustomTextInput extends StatelessWidget {
               focusNode: focusNode,
               decoration: InputDecoration(
                 hintText: placeholder,
-                border: InputBorder.none, // Pas de bordure visible
+                border: InputBorder.none,
               ),
-              style: const TextStyle(color: Colors.black), // Couleur du texte
+              style: const TextStyle(color: Colors.black),
             );
           })),
         ],

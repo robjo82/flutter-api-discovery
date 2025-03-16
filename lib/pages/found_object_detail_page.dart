@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:loosted/models/found_object.dart';
+import 'package:flutter_api_discovery/models/found_object.dart';
 
 class FoundObjectDetailPage extends StatelessWidget {
   final FoundObject foundObject;
@@ -10,7 +10,7 @@ class FoundObjectDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Détails de l\'objet trouvé'),
+        title: const Text('Found Object Detail'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,7 +37,7 @@ class FoundObjectDetailPage extends StatelessWidget {
                 const SizedBox(
                   width: 8.0,
                 ),
-                if (foundObject.dateRestituted != null)
+                if (foundObject.dateReturned != null)
                   DecoratedBox(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
@@ -45,7 +45,7 @@ class FoundObjectDetailPage extends StatelessWidget {
                       child: Padding(
                           padding:
                               const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
-                          child: Text('Rendu',
+                          child: Text('Returned',
                               style: TextStyle(
                                   color: Colors.green[900], fontSize: 12))))
                 else
@@ -56,7 +56,7 @@ class FoundObjectDetailPage extends StatelessWidget {
                       child: Padding(
                           padding:
                               const EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 2.0),
-                          child: Text('Perdu',
+                          child: Text('Lost',
                               style: TextStyle(
                                   color: Colors.red[900], fontSize: 12))))
               ],
@@ -125,7 +125,7 @@ class FoundObjectDetailPage extends StatelessWidget {
                     foregroundColor: Colors.white,
                     textStyle: const TextStyle(fontSize: 18),
                   ),
-                  child: const Text('Contacter'),
+                  child: const Text('Contact'),
                 ))
               ],
             ),

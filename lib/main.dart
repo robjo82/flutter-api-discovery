@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:loosted/models/found_object.dart';
-import 'package:loosted/pages/search_page.dart';
-import 'package:loosted/services/sncf_data.dart';
-import 'package:loosted/widgets/found_objects_list.dart';
-import 'package:loosted/widgets/icon_button_text.dart';
+import 'package:flutter_api_discovery/models/found_object.dart';
+import 'package:flutter_api_discovery/pages/search_page.dart';
+import 'package:flutter_api_discovery/services/sncf_data.dart';
+import 'package:flutter_api_discovery/widgets/found_objects_list.dart';
+import 'package:flutter_api_discovery/widgets/icon_button_text.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Loosted',
+      title: 'flutter_api_discovery',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
         primaryColor: Colors.purple[400],
@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _futureFoundObjects =
-        SncfData().fetchFoundObjects(); // Récupérer les données au démarrage
+        SncfData().fetchFoundObjects();
   }
 
   @override
@@ -59,12 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset("assets/logo-dark.png", width: 200),
+                    Image.asset("assets/logo.png", width: 200),
                     const SizedBox(
                       height: 24,
                     ),
                     IconTextButton(
-                        text: "Rechercher un objet",
+                        text: "Search for an object",
                         icon: Icons.search,
                         onPressed: () {
                           Navigator.push(
@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Objets fraichement trouvés!",
+                        "Recently found objects",
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 18,
@@ -114,24 +114,21 @@ class _MyHomePageState extends State<MyHomePage> {
                       Expanded(
                         child: FutureBuilder<List<FoundObject>>(
                           future:
-                              _futureFoundObjects, // Future contenant les données
+                              _futureFoundObjects,
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              // Afficher un loader tant que les données ne sont pas disponibles
                               return const Center(
                                   child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
-                              // En cas d'erreur
                               return Center(
-                                  child: Text('Erreur: ${snapshot.error}'));
+                                  child: Text('Error: ${snapshot.error}'));
                             } else if (snapshot.hasData) {
-                              // Si les données sont disponibles, afficher la liste
                               return FoundObjectsList(
                                   foundObjects: snapshot.data!);
                             } else {
                               return const Center(
-                                  child: Text('Aucun objet trouvé.'));
+                                  child: Text('No data available'));
                             }
                           },
                         ),

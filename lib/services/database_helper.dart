@@ -1,4 +1,4 @@
-import 'package:loosted/models/found_object.dart';
+import 'package:flutter_api_discovery/models/found_object.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -43,7 +43,6 @@ class DatabaseHelper {
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
-          // Ajoute la colonne only_new si elle n'existe pas
           await db.execute(
               'ALTER TABLE recent_searches ADD COLUMN only_new INTEGER DEFAULT 0');
         }
@@ -51,7 +50,6 @@ class DatabaseHelper {
     );
   }
 
-  // Insérer un objet consulté
   Future<void> insertViewedObject(FoundObject object) async {
     final db = await database;
     await db.insert('viewed_objects', {
@@ -63,7 +61,6 @@ class DatabaseHelper {
     });
   }
 
-  // Vérifier si un objet a déjà été consulté
   Future<bool> isObjectViewed(FoundObject object) async {
     final db = await database;
     final result = await db.query(
@@ -74,7 +71,6 @@ class DatabaseHelper {
     return result.isNotEmpty;
   }
 
-  // Récupérer les IDs des objets déjà consultés
   Future<List<String>> getViewedObjectIds() async {
     final db = await database;
     final List<Map<String, dynamic>> result =
@@ -82,7 +78,6 @@ class DatabaseHelper {
     return result.map((row) => row['id'] as String).toList();
   }
 
-  // Insérer une recherche récente
   Future<void> insertRecentSearch({
     required String stationName,
     required String objectType,
@@ -100,7 +95,6 @@ class DatabaseHelper {
     });
   }
 
-  // Récupérer les recherches récentes
   Future<List<Map<String, dynamic>>> getRecentSearches() async {
     final db = await database;
     return await db.query('recent_searches', orderBy: 'id DESC', limit: 3);

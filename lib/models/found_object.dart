@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 class FoundObject {
-  final DateTime date; // Date à laquelle l'objet a été trouvé
-  final DateTime? dateRestituted; // Date de restitution de l'objet (nullable)
-  final String? stationName; // Nom de la gare d'origine
-  final String? stationCode; // Code UIC de la gare
-  final String nature; // Nature de l'objet (ex: "Appareil audio portable")
-  final String type; // Type de l'objet (ex: "Appareils électroniques")
-  final String recordType; // Type d'enregistrement (ex: "Objet trouvé")
+  final DateTime date;
+  final DateTime? dateReturned;
+  final String? stationName;
+  final String? stationCode;
+  final String nature;
+  final String type;
+  final String recordType;
 
   FoundObject({
     required this.date,
-    this.dateRestituted,
+    this.dateReturned,
     required this.stationName,
     required this.stationCode,
     required this.nature,
@@ -20,11 +20,10 @@ class FoundObject {
     required this.recordType,
   });
 
-  // Méthode pour convertir un JSON en un objet FoundObject
   factory FoundObject.fromJson(Map<String, dynamic> json) {
     return FoundObject(
       date: DateTime.parse(json['date'] as String),
-      dateRestituted: json['gc_obo_date_heure_restitution_c'] != null
+      dateReturned: json['gc_obo_date_heure_restitution_c'] != null
           ? DateTime.parse(json['gc_obo_date_heure_restitution_c'] as String)
           : null,
       stationName: json['gc_obo_gare_origine_r_name'] as String?,
@@ -35,16 +34,13 @@ class FoundObject {
     );
   }
 
-  // Générer un ID unique basé sur les propriétés de l'objet
   String getUniqueId() {
     final String rawId =
         '${date.toIso8601String()}|$stationName|$nature|$type';
 
-    // Générer un hash SHA-256 de la chaîne concaténée
     final bytes = utf8.encode(rawId);
     final digest = sha256.convert(bytes);
 
-    // Retourner le hash sous forme de chaîne de caractères
     return digest.toString();
   }
 }

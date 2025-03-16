@@ -68,7 +68,7 @@ class _DatePickerState extends State<DatePicker> {
       child: Row(
         children: [
           const Icon(Icons.calendar_month,
-              color: Colors.grey), // Icône à gauche
+              color: Colors.grey),
           const SizedBox(width: 8.0),
           Expanded(
               child: Row(
@@ -77,14 +77,14 @@ class _DatePickerState extends State<DatePicker> {
               TextButton(
                 onPressed: () => _selectMinDate(context),
                 child: Text(_selectedMinDate == null
-                    ? 'Date minimale'
+                    ? 'Minimum date'
                     : '${_selectedMinDate?.day}/${_selectedMinDate?.month}/${_selectedMinDate?.year}'),
               ),
               const Text("-"),
               TextButton(
                 onPressed: () => _selectMaxDate(context),
                 child: Text(_selectedMaxDate == null
-                    ? 'Date maximale'
+                    ? 'Maximum date'
                     : '${_selectedMaxDate?.day}/${_selectedMaxDate?.month}/${_selectedMaxDate?.year}'),
               ),
             ],
